@@ -15,7 +15,9 @@ shader on the mesh to lookup color and orther material properties from a texture
 different colors on on the model, and allowing different smooth/metal properties across the mesh.
 
 The Palette ScriptableObject allows an albedo and property mesh to be easily baked into the 
-required textures. Sse Scenes/TestScene for an example.
+required textures. See Scenes/TestScene for an example. There are some caveats with this approach,
+notably that the texture mapping from AssetForge is not preserved, and must be replicated using 
+the included StandardVertexColors shader.
 
 
 ```git submodule add https://github.com/simonwittber/AssetForgePostProcessor AssetForgePostProcessor```
