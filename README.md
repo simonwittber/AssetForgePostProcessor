@@ -21,6 +21,7 @@ the included StandardVertexColors shader. In exchange for this, you gain:
  - Emission Control
  - Smoothness Control
  - Metallic Control
+ - Seamless texturing, no box mapping artifacts.
 
 
 ```git submodule add https://github.com/simonwittber/AssetForgePostProcessor AssetForgePostProcessor```
