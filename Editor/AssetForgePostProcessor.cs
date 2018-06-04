@@ -96,8 +96,8 @@ public class AssetForgePostProcessor : AssetPostprocessor
             triangleIndex += vertCount;
         }
         newMesh.triangles = allIndices.ToArray();
-        newMesh.RecalculateNormals();
-        newMesh.RecalculateTangents();
+        // newMesh.RecalculateNormals();
+        // newMesh.RecalculateTangents();
         var g = new GameObject("CombinedMesh");
         g.AddComponent<MeshFilter>().sharedMesh = newMesh;
         g.AddComponent<MeshRenderer>().sharedMaterial = newSharedMaterials[0];
