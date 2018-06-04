@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [CustomPropertyDrawer(typeof(Palette.PaletteItem))]
-public class PaletteEditor : PropertyDrawer
+public class PalettePropertyDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -21,4 +21,5 @@ public class PaletteEditor : PropertyDrawer
         EditorGUI.PropertyField(rect, property.FindPropertyRelative("noiseScale"), new GUIContent("N", "Noise Scale"));
         property.serializedObject.ApplyModifiedProperties();
     }
+
 }

@@ -12,14 +12,10 @@ public class Palette : ScriptableObject
     public struct PaletteItem
     {
         public Color albedo;
-        [Range(0, 1)]
-        public float smoothness;
-        [Range(0, 1)]
-        public float metallic;
-        [Range(0, 1)]
-        public float noiseScale;
-        [Range(0, 1)]
-        public float emission;
+        [Range(0, 1)] public float smoothness;
+        [Range(0, 1)] public float metallic;
+        [Range(0, 1)] public float noiseScale;
+        [Range(0, 1)] public float emission;
     }
     public PaletteItem[] items;
 
