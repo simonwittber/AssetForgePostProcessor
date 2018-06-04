@@ -11,7 +11,6 @@ public class AssetForgePostProcessor : AssetPostprocessor
 
     void OnPostprocessModel(GameObject gameObject)
     {
-        Debug.Log(assetPath);
         if (assetPath.Contains("AssetForge") && !assetPath.EndsWith(".asset"))
             Apply(gameObject);
     }
@@ -57,11 +56,38 @@ public class AssetForgePostProcessor : AssetPostprocessor
                     vac = materialAttributeMap[currentMaterial] = new VertexAttributeCollection() { order = materialAttributeMap.Count };
 
                 var indices = mesh.GetTriangles(submeshIndex);
-                for (var i = 0; i < indices.Length; i++)
+                for (var i = 0; i < indices.Length; i += 3)
                 {
-                    vac.vertex.Add(vertices[indices[i]] + f.transform.localPosition);
-                    if (addNormal) vac.normal.Add(normals[indices[i]]);
-                    if (addUV) vac.uv.Add(uvs[indices[i]]);
+                    var j = i + 1;
+                    var k = i + 2;
+
+                    var a = indices[i];
+                    var b = indices[j];
+                    var c = indices[k];
+
+
+                    var A = vertices[a] + f.transform.localPosition;
+                    var B = vertices[b] + f.transform.localPosition;
+                    var C = vertices[c] + f.transform.localPosition;
+                    vac.vertex.Add(A);
+                    vac.vertex.Add(B);
+                    vac.vertex.Add(C);
+
+                    if (addNormal)
+                    {
+                        vac.normal.Add(normals[a]);
+                        vac.normal.Add(normals[b]);
+                        vac.normal.Add(normals[c]);
+                    }
+                    if (addUV)
+                    {
+                        vac.uv.Add(uvs[a]);
+                        vac.uv.Add(uvs[b]);
+                        vac.uv.Add(uvs[c]);
+                    }
+                    // var h = (normals[a] - normals[b]) + (normals[a] - normals[c]);
+                    vac.color.Add(new Color(vac.order / 255f, 0, 0, 0));
+                    vac.color.Add(new Color(vac.order / 255f, 0, 0, 0));
                     vac.color.Add(new Color(vac.order / 255f, 0, 0, 0));
                 }
             }
@@ -77,7 +103,15 @@ public class AssetForgePostProcessor : AssetPostprocessor
             allAttributes.uv.AddRange(va.uv);
             allAttributes.color.AddRange(va.color);
         }
-        var newMesh = new Mesh() { name = "CombinedMesh" };
+        var newPath = assetPath.Replace(".fbx", ".asset");
+        var newMesh = (Mesh)AssetDatabase.LoadAssetAtPath(newPath, typeof(Mesh));
+        if (newMesh == null)
+        {
+            newMesh = new Mesh() { name = "CombinedMesh" };
+            AssetDatabase.CreateAsset(newMesh, newPath);
+        }
+        else
+            newMesh.Clear();
         newMesh.SetVertices(allAttributes.vertex);
         newMesh.SetNormals(allAttributes.normal);
         newMesh.SetColors(allAttributes.color);
@@ -91,7 +125,6 @@ public class AssetForgePostProcessor : AssetPostprocessor
             triangleIndex += vertCount;
         }
         newMesh.triangles = allIndices.ToArray();
-        AssetDatabase.CreateAsset(newMesh, assetPath.Replace(".fbx", ".asset"));
     }
 
     void FixScale(MeshFilter filter)

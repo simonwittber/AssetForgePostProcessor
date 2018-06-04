@@ -53,7 +53,7 @@
 			n = lerp(_NoiseFilter, 1, n);
 
 			o.Albedo = c.rgb * n.r;
-			
+			// o.Albedo = IN.color.rgb;
 			o.Emission = c * p.a * _EmissionMultiplier * (1-n.a*_EmissionNoise);
 			o.Smoothness = p.r * (1-n.g*_SmoothnessNoise);
 			o.Metallic = p.g * n.b * (1-n.g*_MetallicNoise);;
