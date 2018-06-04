@@ -6,13 +6,13 @@ using UnityEditor;
 using UnityEngine;
 
 
-
 public class AssetForgePostProcessor : AssetPostprocessor
 {
 
     void OnPostprocessModel(GameObject gameObject)
     {
-        if (assetImporter.assetPath.Contains("AssetForge"))
+        Debug.Log(assetPath);
+        if (assetPath.Contains("AssetForge") && !assetPath.EndsWith(".asset"))
             Apply(gameObject);
     }
 
@@ -21,13 +21,8 @@ public class AssetForgePostProcessor : AssetPostprocessor
         var filters = gameObject.GetComponentsInChildren<MeshFilter>();
         foreach (var f in filters)
             FixScale(f);
-        var newGameObject = CombineMaterials(gameObject);
-        foreach (var f in filters)
-            f.gameObject.SetActive(false);
+        CombineMaterials(gameObject);
 
-        gameObject.transform.position = gameObject.transform.position;
-        gameObject.transform.rotation = gameObject.transform.rotation;
-        newGameObject.transform.parent = gameObject.transform;
     }
 
     class VertexAttributeCollection
@@ -39,7 +34,7 @@ public class AssetForgePostProcessor : AssetPostprocessor
         public List<Vector2> uv = new List<Vector2>();
     }
 
-    GameObject CombineMaterials(GameObject go)
+    void CombineMaterials(GameObject go)
     {
         var filters = go.GetComponentsInChildren<MeshFilter>();
         var materialAttributeMap = new Dictionary<Material, VertexAttributeCollection>();
@@ -96,13 +91,7 @@ public class AssetForgePostProcessor : AssetPostprocessor
             triangleIndex += vertCount;
         }
         newMesh.triangles = allIndices.ToArray();
-        // newMesh.RecalculateNormals();
-        // newMesh.RecalculateTangents();
-        var g = new GameObject("CombinedMesh");
-        g.AddComponent<MeshFilter>().sharedMesh = newMesh;
-        g.AddComponent<MeshRenderer>().sharedMaterial = newSharedMaterials[0];
-        AssetDatabase.AddObjectToAsset(newMesh, assetPath);
-        return g;
+        AssetDatabase.CreateAsset(newMesh, assetPath.Replace(".fbx", ".asset"));
     }
 
     void FixScale(MeshFilter filter)

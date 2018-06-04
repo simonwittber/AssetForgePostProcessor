@@ -77,7 +77,7 @@ Material:
     - _Metallic: 0
     - _MetallicNoise: 0.87
     - _Mode: 0
-    - _NoiseFilter: 0.399
+    - _NoiseFilter: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessNoise: 0.248
