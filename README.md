@@ -14,10 +14,13 @@ The vertex colors of the new mesh are assign a value for each unique material. T
 shader on the mesh to lookup color and orther material properties from a texture, thus preserving
 different colors on on the model, and allowing different smooth/metal properties across the mesh.
 
-The Palette ScriptableObject allows an albedo and property mesh to be easily baked into the 
+The Palette ScriptableObject allows an albedo and property texture to be easily baked into the 
 required textures. See Scenes/TestScene for an example. There are some caveats with this approach,
 notably that the texture mapping from AssetForge is not preserved, and must be replicated using 
-the included StandardVertexColors shader.
+the included StandardVertexColors shader. In exchange for this, you gain:
+ - Emission Control
+ - Smoothness Control
+ - Metallic Control
 
 
 ```git submodule add https://github.com/simonwittber/AssetForgePostProcessor AssetForgePostProcessor```
